@@ -12,7 +12,7 @@ module "network" {
   enable_dns_support      = true                                       # DNS解決を有効化
   enable_nat_gateway      = true                                       # NatGatewayを有効化
   one_nat_gateway_per_az  = true                                       # 1AZに対してNatGatewayを作成
-  map_public_ip_on_launch = true                                       # publicサブネットにIPv4を自動割り当て流
+  map_public_ip_on_launch = true                                       # publicサブネットにIPv4を自動割り当てる
 
   vpc_tags                 = { Name = "vpc" }
   public_route_table_tags  = { Name = "route-table-public" }
