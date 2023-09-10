@@ -1,3 +1,31 @@
+## ディレクトリ説明
+```bash 
+.
+├── Readme.md # リポジトリの説明
+├── architecture # アーキテクチャ構成図を管理
+│   ├── feature_network.dio
+│   └── ネットワーク.png
+├── envs 
+│   ├── dev # develop環境
+│   │   ├── backend.tf # tfstateを甘露
+│   │   ├── main.tf # module呼び出し
+│   │   ├── provider.tf # providerブロック
+│   │   ├── terraform.tfvars # 変数を入力
+│   │   └── variables.tf # 変数
+│   ├── prd # production環境
+│   └── stg # staging環境
+└── modules
+    ├── network # ネットワークリソース
+    │   ├── main.tf
+    │   ├── outputs.tf
+    │   └── variables.tf
+    └── tfstate # tfstate
+        ├── main.tf
+        ├── outputs.tf
+        └── variables.tf
+```
+※ outputs.tf・variables.tfは空でも作成する
+
 ## 実装方法
 - state管理は、ベストプラクティスよりDynamoDBとS3で管理 StateLockをかけるため
 - CIツールには、tfcmt・tfsec・tflint・Plan・Applyを作成
