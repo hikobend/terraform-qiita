@@ -2,6 +2,6 @@ module "dev_tfstate" {
   source = "../../modules/tfstate"
 }
 
-# module "network" {
-#   source = "../../modules/network"
-# }
+module "network" {
+  source = "../../modules/network"
+}
