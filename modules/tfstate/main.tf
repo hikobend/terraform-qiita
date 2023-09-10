@@ -1,5 +1,6 @@
 module "s3_bucket_dev_bucket" {
-  source = "terraform-aws-modules/s3-bucket/aws"
+  source  = "terraform-aws-modules/s3-bucket/aws"
+  version = "3.15.1"
 
   bucket = "${var.env}-qiita-bucket-s3"
   acl    = "private"
