@@ -25,9 +25,9 @@ resource "aws_iam_policy" "Terraform-OIDC-policy" {
           "iam:CreateServiceLinkedRole",
           "iam:DeleteServiceLinkedRole",
           "iam:ListRoles",
+          "iam:GetPolicy",
           "organizations:DescribeOrganization",
           "account:ListRegions",
-          "iam:GetPolicy",
           "iam:GetOpenIDConnectProvider"
         ],
         "Resource" : "arn:aws:iam::${var.account_id}:role/Terraform-OIDC-role"
