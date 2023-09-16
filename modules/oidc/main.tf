@@ -1,7 +1,9 @@
+# IDプロバイダを作成
 module "iam_github_oidc_provider" {
   source = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-provider"
 }
 
+# IAMポリシーを作成
 resource "aws_iam_policy" "this" {
   name        = "Terraform-OIDC-policy"
   description = "Terraform-OIDC-policy"
@@ -12,23 +14,20 @@ resource "aws_iam_policy" "this" {
       {
         "Effect" : "Allow",
         "NotAction" : [
-          "iam:ListRoles",
-          "organizations:DescribeOrganization",
-          "account:ListRegions"
+          "iam:ListRoles",                      # IAMロールの一覧を取得
+          "organizations:DescribeOrganization", # 組織の詳細を取得
+          "account:ListRegions"                 # リージョンの一覧を取得
         ],
         "Resource" : "*"
       },
       {
         "Effect" : "Allow",
         "Action" : [
-          "iam:DeleteServiceLinkedRole",
-          "iam:CreateServiceLinkedRole",
-          "iam:DeleteServiceLinkedRole",
-          "iam:ListRoles",
-          "iam:GetPolicy",
-          "organizations:DescribeOrganization",
-          "account:ListRegions",
-          "iam:GetOpenIDConnectProvider"
+          "iam:DeleteServiceLinkedRole", # サービス連携ロールを削除
+          "iam:CreateServiceLinkedRole", # サービス連携ロールを作成
+          "iam:DeleteServiceLinkedRole", # サービス連携ロールを削除
+          "iam:GetPolicy",               # IAMポリシーの詳細を取得
+          "iam:GetOpenIDConnectProvider" # OIDCプロバイダの詳細を取得
         ],
         "Resource" : "arn:aws:iam::${var.account_id}:role/Terraform-OIDC-role"
       }
@@ -36,6 +35,7 @@ resource "aws_iam_policy" "this" {
   })
 }
 
+# IAMロールを作成
 resource "aws_iam_role" "this" {
   name = "Terraform-OIDC-role"
   assume_role_policy = jsonencode({
