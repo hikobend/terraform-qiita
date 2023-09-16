@@ -15,8 +15,8 @@ permissions:
   contents: read
 
 jobs:
-  terraform_plan:
-    name: terraform - plan
+  terraform_dev_plan:
+    name: terraform - dev - plan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
