@@ -2,7 +2,7 @@ module "iam_github_oidc_provider" {
   source = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-provider"
 }
 
-resource "aws_iam_policy" "Terraform-OIDC-policy" {
+resource "aws_iam_policy" "this" {
   name        = "Terraform-OIDC-policy"
   description = "Terraform-OIDC-policy"
 
@@ -36,7 +36,7 @@ resource "aws_iam_policy" "Terraform-OIDC-policy" {
   })
 }
 
-resource "aws_iam_role" "Terraform-OIDC-role" {
+resource "aws_iam_role" "this" {
   name = "Terraform-OIDC-role"
   assume_role_policy = jsonencode({
     "Version" : "2008-10-17",
@@ -55,5 +55,5 @@ resource "aws_iam_role" "Terraform-OIDC-role" {
       }
     ]
   })
-  managed_policy_arns = [aws_iam_policy.Terraform-OIDC-policy.arn]
+  managed_policy_arns = [aws_iam_policy.this.arn]
 }
