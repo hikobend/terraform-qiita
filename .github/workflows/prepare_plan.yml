@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   terraform_prepare_plan:
-    name: terraform - prepare- plan
+    name: terraform - prepare - plan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
