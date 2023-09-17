@@ -21,3 +21,7 @@ module "network" {
   nat_gateway_tags         = { Name = "nat-gateway" }
   nat_eip_tags             = { Name = "elatic-ip" }
 }
+
+resource "aws_vpc" "name" {
+  cidr = "10.0.0.0/16"
+}
