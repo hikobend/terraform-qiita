@@ -8,10 +8,3 @@ module "oidc" {
   user_name       = var.user_name
   repository_name = var.repository_name
 }
-
-resource "aws_vpc" "this" {
-  cidr_block = "10.0.0.0/20"
-  tags = {
-    Name = "prepare-vpc"
-  }
-}
