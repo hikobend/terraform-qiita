@@ -21,3 +21,79 @@ module "network" {
   nat_gateway_tags         = { Name = "${var.env}-nat-gateway" }
   nat_eip_tags             = { Name = "${var.env}-elatic-ip" }
 }
+
+module "alb_sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.1.0"
+
+  name        = "${var.env}-alb-sg"
+  description = "ALB security group"
+  vpc_id      = module.network.vpc_id
+
+  ingress_cidr_blocks = ["0.0.0.0/0"]
+  ingress_rules       = ["https-443-tcp", "http-80-tcp"]
+  egress_with_source_security_group_id = [
+    {
+      rule                     = "all-all"
+      source_security_group_id = module.ecs_sg.security_group_id
+    }
+  ]
+}
+
+module "ecs_sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.1.0"
+
+  name        = "${var.env}-ecs-sg"
+  description = "ECS security group"
+  vpc_id      = module.network.vpc_id
+
+  ingress_with_source_security_group_id = [
+    {
+      rule                     = "all-all"
+      source_security_group_id = module.alb_sg.security_group_id
+    }
+  ]
+  egress_with_source_security_group_id = [
+    {
+      rule                     = "mysql-tcp"
+      source_security_group_id = module.database_sg.security_group_id
+    },
+    {
+      rule                     = "redis-tcp"
+      source_security_group_id = module.elasticache_sg.security_group_id
+    }
+  ]
+}
+
+module "database_sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.1.0"
+
+  name        = "${var.env}-database-sg"
+  description = "Database security group"
+  vpc_id      = module.network.vpc_id
+
+  ingress_with_source_security_group_id = [
+    {
+      rule                     = "mysql-tcp"
+      source_security_group_id = module.ecs_sg.security_group_id
+    }
+  ]
+}
+
+module "elasticache_sg" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "5.1.0"
+
+  name        = "${var.env}-elasticache-sg"
+  description = "Elasticache security group"
+  vpc_id      = module.network.vpc_id
+
+  ingress_with_source_security_group_id = [
+    {
+      rule                     = "redis-tcp"
+      source_security_group_id = module.ecs_sg.security_group_id
+    }
+  ]
+}
