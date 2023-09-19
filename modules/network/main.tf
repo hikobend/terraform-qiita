@@ -77,7 +77,7 @@ module "database_sg" {
   ingress_with_source_security_group_id = [
     {
       rule                     = "mysql-tcp"
-      source_security_group_id = module.backend_sg.security_group_id
+      source_security_group_id = module.ecs_sg.security_group_id
     }
   ]
 }
@@ -93,7 +93,7 @@ module "elasticache_sg" {
   ingress_with_source_security_group_id = [
     {
       rule                     = "redis-tcp"
-      source_security_group_id = module.backend_sg.security_group_id
+      source_security_group_id = module.ecs_sg.security_group_id
     }
   ]
 }
