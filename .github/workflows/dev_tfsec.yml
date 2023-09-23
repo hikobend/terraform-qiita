@@ -11,26 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Setup Go
-      uses: actions/setup-go@v2
+    - name: Setup Go # Golangをインストール
+      uses: actions/setup-go@v4
       with:
-        go-version: 1.19.2
+        go-version: 1.20.8
 
-    - name: Install tfsec
+    - name: Install tfsec # tfsecをインストール
       run: go install github.com/aquasecurity/tfsec/cmd/tfsec@v1.28.1
 
-    - name: Install jq
+    - name: Install jq # jqをインストール
       run: sudo apt-get install jq
 
-    - name: Show Result tfsec
+    - name: Show Result tfsec # ./envs/devに対してtfsecを実行
       run: tfsec ./envs/dev || true
 
-    - name: Run tfsec
+    - name: Run tfsec # ./envs/devに対してtfsecを実行し、結果をjson形式で出力
       run: tfsec ./envs/dev --format json > tfsec_output.json || true
 
-    - name: Check tfsec results
+    - name: Check tfsec results # tfsecの結果を確認し、critical/highの結果があればCIが失敗
       run: |
         critical_count=$(jq '[.results[] | select(.severity == "CRITICAL")] | length' tfsec_output.json)
         high_count=$(jq '[.results[] | select(.severity == "HIGH")] | length' tfsec_output.json)
