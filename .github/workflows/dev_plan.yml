@@ -42,7 +42,7 @@ jobs:
           mv /tmp/tfcmt /usr/local/bin
           tfcmt --version
 
-jobs:
+jobs2:
   check_out:
     name: Check
     runs-on: ubuntu-latest
