@@ -52,7 +52,7 @@ jobs:
   terraform_init_validate:
     name: Terraform Init & Validate
     runs-on: ubuntu-latest
-    needs: setup_env
+    needs: [setup_env, check_out]
     steps:
       - name: Terraform Init
         run: terraform init -upgrade
