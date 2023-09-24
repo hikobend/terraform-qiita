@@ -42,6 +42,12 @@ jobs:
           mv /tmp/tfcmt /usr/local/bin
           tfcmt --version
 
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
   terraform_init_validate:
     name: Terraform Init & Validate
     runs-on: ubuntu-latest
