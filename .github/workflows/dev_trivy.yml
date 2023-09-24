@@ -19,7 +19,7 @@ jobs:
 
     - name: Run Trivy
       uses: aquasecurity/trivy-action@master
-      working-directory: ./envs/dev
       with:
         scan-type: config
+        input: ./envs/dev/main.tf
         trivy-config: trivy.yaml
