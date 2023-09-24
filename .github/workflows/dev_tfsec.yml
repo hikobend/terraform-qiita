@@ -11,40 +11,22 @@ on:
       - hotfix/*
 
 jobs:
-  setup:
+  tfsec:
     runs-on: ubuntu-latest
-    outputs:
-      go-version: ${{ steps.setup-go.outputs.go-version }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
     - name: Setup Go # Golangをインストール
-      id: setup-go
       uses: actions/setup-go@v4
       with:
         go-version: 1.20.8
 
-  install_tfsec:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
     - name: Install tfsec # tfsecをインストール
       run: go install github.com/aquasecurity/tfsec/cmd/tfsec@v1.28.1
 
-  install_jq:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
     - name: Install jq # jqをインストール
       run: sudo apt-get install jq
-
-  tfsec:
-    needs: [install_tfsec, install_jq]
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
 
     - name: Show Result tfsec # ./envs/devに対してtfsecを実行
       run: tfsec ./envs/dev || true
