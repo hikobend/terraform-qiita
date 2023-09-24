@@ -15,7 +15,8 @@ permissions:
   contents: read
 
 jobs:
-  setup_terraform:
+  terraform_dev_plan:
+    name: terraform - dev - plan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,11 +27,11 @@ jobs:
         with:
           terraform_version: 1.5.4
 
-  setup_tfcmt:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: AWS OIDC credential
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/${{ secrets.OIDC_ROLE }}
+          aws-region: ap-northeast-1
 
       - name: setup tfcmt
         env:
@@ -40,19 +41,6 @@ jobs:
           tar xzf /tmp/tfcmt.tar.gz -C /tmp
           mv /tmp/tfcmt /usr/local/bin
           tfcmt --version
-
-  terraform_dev_plan:
-    needs: [setup_terraform, setup_tfcmt]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: AWS OIDC credential
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/${{ secrets.OIDC_ROLE }}
-          aws-region: ap-northeast-1
 
       - name: Terraform Init
         run: terraform init -upgrade
