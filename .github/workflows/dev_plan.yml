@@ -15,8 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  setup:
-    name: Setup
+  setup_terraform:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,11 +26,11 @@ jobs:
         with:
           terraform_version: 1.5.4
 
-      - name: AWS OIDC credential
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/${{ secrets.OIDC_ROLE }}
-          aws-region: ap-northeast-1
+  setup_tfcmt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: setup tfcmt
         env:
@@ -42,32 +41,28 @@ jobs:
           mv /tmp/tfcmt /usr/local/bin
           tfcmt --version
 
+  terraform_dev_plan:
+    needs: [setup_terraform, setup_tfcmt]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: AWS OIDC credential
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT }}:role/${{ secrets.OIDC_ROLE }}
+          aws-region: ap-northeast-1
+
       - name: Terraform Init
         run: terraform init -upgrade
         working-directory: ./envs/dev
 
-  validate:
-    needs: setup
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        checks:
-          - { run: 'terraform fmt -check', name: 'Terraform fmt' }
-          - { run: 'terraform validate -no-color', name: 'Terraform Validate' }
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Terraform fmt
+        run: terraform fmt -check
 
-      - name: ${{ matrix.checks.name }}
-        run: ${{ matrix.checks.run }}
-        working-directory: ./envs/dev
-
-  plan:
-    needs: validate
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Terraform Validate
+        run: terraform validate -no-color
 
       - name: terraform refresh
         run: terraform refresh -no-color -lock=false -var="env=dev"
