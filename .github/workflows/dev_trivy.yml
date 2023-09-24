@@ -24,4 +24,4 @@ jobs:
         scan-ref: ./envs/dev/main.tf
         list-all-packages: true
         severity: 'CRITICAL,HIGH'
-        github-pat: ${{ secrets.GITHUB_TOKEN }}
+        exit-code: "1"
