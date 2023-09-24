@@ -1,28 +1,43 @@
 ## ディレクトリ説明
 ```bash 
 .
-├── Readme.md # リポジトリの説明
-├── architecture # アーキテクチャ構成図を管理
-│   ├── feature_network.dio
-│   └── ネットワーク.png
+.github
+├── workflows
+│   ├── dev_plan.yml # devディレクトリにPlanのCIを追加
+│   └── prepare_plan.yml # prepareディレクトリにPlanのCIを追加
 ├── envs 
 │   ├── dev # develop環境
-│   │   ├── backend.tf # tfstateを甘露
+│   │   ├── backend.tf # tfstateを管理
 │   │   ├── main.tf # module呼び出し
 │   │   ├── provider.tf # providerブロック
 │   │   ├── terraform.tfvars # 変数を入力
 │   │   └── variables.tf # 変数
 │   ├── prd # production環境
 │   └── stg # staging環境
-└── modules
-    ├── network # ネットワークリソース
-    │   ├── main.tf
-    │   ├── outputs.tf
-    │   └── variables.tf
-    └── tfstate # tfstate
-        ├── main.tf
-        ├── outputs.tf
-        └── variables.tf
+├── modules
+│   ├── network # ネットワーク
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── oidc # OIDC
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   ├── prepare_tfstate # prepareのtfstateを管理するS3
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   └── variables.tf
+│   └── tfstate # devのtfstateを管理するS3
+│       ├── main.tf
+│       ├── outputs.tf
+│       └── variables.tf
+└── prepare # 共通リソース作成
+    ├── backend.tf
+    ├── main.tf
+    ├── provider.tf
+    ├── terraform.tfvars
+    └── variables.tf
+
 ```
 ※ outputs.tf・variables.tfは空でも作成する
 
