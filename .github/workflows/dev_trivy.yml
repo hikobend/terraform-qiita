@@ -20,8 +20,8 @@ jobs:
     - name: Run Trivy
       uses: aquasecurity/trivy-action@master
       with:
-        format: json
         scan-type: config
         scan-ref: ./envs/dev/main.tf
         list-all-packages: true
         severity: 'CRITICAL,HIGH'
+        github-pat: ${{ secrets.GITHUB_TOKEN }}
