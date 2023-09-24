@@ -2,8 +2,13 @@ name: Terraform Trivy Scan
 
 on:
   push:
-    paths:
-    - '**.tf'
+    branches:
+      - feature/*
+      - hotfix/*
+  pull_request:
+    branches:
+      - feature/*
+      - hotfix/*
 
 jobs:
   scan:
