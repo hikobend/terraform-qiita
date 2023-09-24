@@ -18,12 +18,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Run Trivy vulnerability scanner
+    - name: Set up Trivy
       uses: aquasecurity/trivy-action@master
-      # with:
-      #   image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
-      #   format: 'table'
-      #   exit-code: '1'
-      #   ignore-unfixed: true
-      #   vuln-type: 'os,library'
-      #   severity: 'CRITICAL,HIGH'
+      with:
+        scan-type: 'fs'
+        input: './envs/dev/main.tf'
+        format: 'template'
+        template: '@/contrib/sarif.tpl'
+        output: 'trivy-results.sarif'
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: trivy-results.sarif
