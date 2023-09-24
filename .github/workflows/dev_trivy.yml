@@ -29,4 +29,10 @@ jobs:
 
     - name: Run Trivy scan for Terraform
       run: |
-        trivy config ./envs/dev/main.tf
+        scan_output=$(trivy config ./envs/dev/main.tf)
+        echo "$scan_output"
+        
+        if echo "$scan_output" | grep -qE "(CRITICAL|HIGH)"; then
+            echo "CRITICAL or HIGH vulnerabilities found!"
+            exit 1
+        fi
