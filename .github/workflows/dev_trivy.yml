@@ -21,6 +21,6 @@ jobs:
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: 'config'
-        scan-ref: ./envs/dev/main.tf
-        trivyignores: ./envs/dev/.trivyignore
+        scan-ref: ./envs/dev/main.tf # セキュリティスキャンするファイル
+        trivyignores: ./envs/dev/.trivyignore # ignoreするファイル
         exit-code: '1'
