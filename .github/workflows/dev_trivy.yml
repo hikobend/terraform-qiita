@@ -1,0 +1,26 @@
+name: Terraform Trivy Scan
+
+on:
+  push:
+    branches:
+      - feature/*
+      - hotfix/*
+  pull_request:
+    branches:
+      - feature/*
+      - hotfix/*
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'config'
+        scan-ref: ./envs/dev/main.tf # セキュリティスキャンする設定ファイル
+        trivyignores: ./envs/dev/.trivyignore # ignoreする設定ファイル
+        exit-code: '1'
