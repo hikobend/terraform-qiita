@@ -22,5 +22,5 @@ jobs:
       with:
         scan-type: 'config'
         scan-ref: ./envs/dev/main.tf
-        severity: 'LOW,MEDIUM,HIGH'
+        trivyignores: ./envs/dev/.trivyignore
         exit-code: '1'
