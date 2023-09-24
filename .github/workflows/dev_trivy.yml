@@ -29,4 +29,4 @@ jobs:
 
     - name: Run Trivy scan for Terraform
       run: |
-        trivy fs --severity HIGH,CRITICAL --input ./envs/dev/main.tf
+        trivy config ./envs/dev/main.tf
