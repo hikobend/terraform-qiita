@@ -22,4 +22,5 @@ jobs:
       with:
         scan-type: 'config'
         scan-ref: ./envs/dev/main.tf
+        severity: 'LOW,MEDIUM,HIGH'
         exit-code: '1'
