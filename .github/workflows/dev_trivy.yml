@@ -18,16 +18,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Trivy
-      uses: aquasecurity/trivy-action@master
-      with:
-        scan-type: 'fs'
-        input: './envs/dev/main.tf'
-        format: 'template'
-        template: '@/contrib/sarif.tpl'
-        output: 'trivy-results.sarif'
+      - name: Run Trivy
+        uses: aquasecurity/trivy-action@master
+        working-directory: ./envs/dev
+        with:
+          scan-type: config
+          trivy-config: trivy.yaml
 
-    - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: trivy-results.sarif
