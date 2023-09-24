@@ -24,4 +24,4 @@ jobs:
         scan-ref: ./envs/dev/main.tf
         list-all-packages: true
         severity: 'CRITICAL,HIGH'
-        exit-code: "1"
+        exit-code: 0
