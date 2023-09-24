@@ -22,3 +22,4 @@ jobs:
       with:
         scan-type: 'config'
         scan-ref: ./envs/dev/main.tf
+        exit-code: '1'
