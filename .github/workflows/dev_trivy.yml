@@ -13,15 +13,13 @@ on:
 jobs:
   scan:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-      - name: Run Trivy
-        uses: aquasecurity/trivy-action@master
-        working-directory: ./envs/dev
-        with:
-          scan-type: config
-          trivy-config: trivy.yaml
-
+    - name: Run Trivy
+      uses: aquasecurity/trivy-action@master
+      working-directory: ./envs/dev
+      with:
+        scan-type: config
+        trivy-config: trivy.yaml
