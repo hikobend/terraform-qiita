@@ -18,21 +18,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Install Trivy
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget apt-transport-https gnupg lsb-release
-        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-        echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-        sudo apt-get update
-        sudo apt-get install -y trivy
-
-    - name: Run Trivy scan for Terraform
-      run: |
-        scan_output=$(trivy config ./envs/dev/main.tf)
-        echo "$scan_output"
-        
-        if echo "$scan_output" | grep -qE "(CRITICAL|HIGH)"; then
-            echo "CRITICAL or HIGH vulnerabilities found!"
-            exit 1
-        fi
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        # with:
+        #   image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+        #   format: 'table'
+        #   exit-code: '1'
+        #   ignore-unfixed: true
+        #   vuln-type: 'os,library'
+        #   severity: 'CRITICAL,HIGH'
