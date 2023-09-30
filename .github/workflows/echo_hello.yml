@@ -2,6 +2,12 @@ name: echo_hello
 
 on:
   workflow_dispatch:
+    inputs:
+      message:
+        description: 'input message'
+        required: true
+        default: 'dev'
+        type: string
 
 permissions:
   id-token: write
@@ -12,5 +18,5 @@ jobs:
     name: 
     runs-on: ubuntu-latest
     steps:
-      - name: echo hello
-        run: echo "hello"
+      - name: echo message
+        run: echo ${{ github.event.inputs.message }}
